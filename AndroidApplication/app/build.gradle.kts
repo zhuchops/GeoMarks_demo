@@ -6,6 +6,10 @@ android {
     namespace = "com.zhuchops.geomark"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.zhuchops.geomark"
         minSdk = 24

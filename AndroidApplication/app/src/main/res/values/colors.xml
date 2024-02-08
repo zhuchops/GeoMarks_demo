@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="inactive_navigation_icon">#FF616161</color>
+    <color name="active_navigation_icon">#FF0099FF</color>
+    <color name="invisible">#00000000</color>
+    <color name="focused_navigation_icon">#FFCCCCCC</color>
+    <color name="pressed_active_navigation_icon">#FF66CCFF</color>
 </resources>
