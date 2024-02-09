@@ -1,10 +1,10 @@
 package com.zhuchops.geomark;
 
+import java.util.HashMap;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import java.util.HashMap;
-import java.util.Objects;
 
 class Converter {
     static JsonArray toFile(GeoLayer layer) {

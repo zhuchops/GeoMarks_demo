@@ -24,4 +24,12 @@ public class GeoLayer {
         return layer;
     }
 
+    public int size() {
+        return layer.size();
+    }
+
+    public GeoMark get(int index) {
+        return layer.get(index);
+    }
+
 }

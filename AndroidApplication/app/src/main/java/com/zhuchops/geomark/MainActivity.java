@@ -1,23 +1,24 @@
 package com.zhuchops.geomark;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
-import android.widget.ImageButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.map.CameraListener;
+import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.CameraUpdateReason;
+import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.mapview.MapView;
 import com.zhuchops.geomark.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CameraListener {
     private MapView mapView;
-    ActivityMainBinding mainBinding;
+    protected ActivityMainBinding mainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +33,22 @@ public class MainActivity extends AppCompatActivity {
 
         mainBinding = ActivityMainBinding.inflate(this.getLayoutInflater());
 
+        MapKit mapKit = MapKitFactory.getInstance();
+
         setContentView(mainBinding.getRoot());
 
         ColorStateList colorStateList = this.getColorStateList(R.color.navigation_icons_color_selector);
 
         mapView = mainBinding.mapView;
+        mapView.getMapWindow().getMap().addCameraListener(this);
         mainBinding.mapButton.setActivated(true);
+        CameraListener cameraListener = new CameraListener() {
+            @Override
+            public void onCameraPositionChanged(@NonNull Map map, @NonNull CameraPosition cameraPosition, @NonNull CameraUpdateReason cameraUpdateReason, boolean b) {
+
+            }
+        };
+
 
     }
 
@@ -50,9 +61,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onStop() {
         mapView.onStop();
         MapKitFactory.getInstance().onStop();
         super.onStop();
+    }
+
+    @Override
+    public void onCameraPositionChanged(@NonNull Map map, @NonNull CameraPosition cameraPosition, @NonNull CameraUpdateReason cameraUpdateReason, boolean b) {
+
     }
 }

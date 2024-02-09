@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="mark_normal_width">10dp</dimen>
+    <dimen name="mark_normal_height">15dp</dimen>
+    <dimen name="mark_selected_width">15dp</dimen>
+    <dimen name="mark_selected_height">20dp</dimen>
+</resources>
