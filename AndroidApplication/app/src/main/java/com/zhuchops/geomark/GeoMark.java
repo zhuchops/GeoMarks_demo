@@ -1,12 +1,12 @@
 package com.zhuchops.geomark;
 
-import javax.json.JsonArrayBuilder;
-import java.util.ArrayList;
+import android.view.View;
+
 import java.util.HashMap;
-import java.util.Objects;
 
 public class GeoMark {
     private int number;
+    private int id;
     private String name;
     private String description;
     private String x, y;
@@ -14,6 +14,7 @@ public class GeoMark {
     public GeoMark(String x, String y, int number, String name, String description) {
         this.x = x; this.y = y;
         this.number = number;
+        this.id = View.generateViewId();
         this.name = name;
         this.description = description;
     }
@@ -28,6 +29,10 @@ public class GeoMark {
 
     public int getNumber() {
         return number;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getX() {

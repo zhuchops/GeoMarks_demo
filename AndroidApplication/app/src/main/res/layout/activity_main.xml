@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/marksLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

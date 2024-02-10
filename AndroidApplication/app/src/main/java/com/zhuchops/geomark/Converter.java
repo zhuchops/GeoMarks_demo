@@ -1,22 +1,19 @@
 package com.zhuchops.geomark;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 
 class Converter {
-    static JsonArray toFile(GeoLayer layer) {
-        JsonArray jsonArray = (JsonArray) Json.createArrayBuilder();
+    static JsonObject toFile(GeoLayer layer) {
+        JsonObject jsonLayer = null;
 
-        for (GeoMark mark:
-             layer.getMarks()) {
+        HashMap<String, Object> data = layer.getData();
+        jsonLayer = (JsonObject) Json.createObjectBuilder(data);
 
-            jsonArray.add(Converter.toFile(mark));
-        }
-
-        return jsonArray;
+        return jsonLayer;
     }
 
     static JsonObject toFile(GeoMark mark) {
@@ -28,29 +25,27 @@ class Converter {
         return jsonObject;
     }
 
-    static GeoLayer fromFile(JsonArray jsonArray) {
-        GeoLayer layer = null;
-
-        GeoMark mark;
-        for (int i = 0; i < jsonArray.size(); i++) {
-            mark = fromFile(jsonArray.getJsonObject(i));
-            layer.addMark(mark);
-        }
+    static GeoLayer convertLayerFromFile(JsonObject jsonLayer) {
+        GeoLayer layer = new GeoLayer(
+                jsonLayer.getString("name"),
+                jsonLayer.getString("description"),
+                (ArrayList<GeoMark>) jsonLayer.get("layer")
+        );
 
         return layer;
     }
 
-    static GeoMark fromFile(JsonObject jsonObject) {
-        GeoMark mark = null;
-
-        mark = new GeoMark(
-                jsonObject.getString("x"),
-                jsonObject.getString("y"),
-                jsonObject.getInt("number"),
-                jsonObject.getString("name"),
-                jsonObject.getString("description")
-        );
-
-        return mark;
-    }
+//    static GeoMark convertMarkFromFile(JsonObject jsonObject) {
+//        GeoMark mark = null;
+//
+//        mark = new GeoMark(
+//                jsonObject.getString("x"),
+//                jsonObject.getString("y"),
+//                jsonObject.getInt("number"),
+//                jsonObject.getString("name"),
+//                jsonObject.getString("description")
+//        );
+//
+//        return mark;
+//    }
 }
