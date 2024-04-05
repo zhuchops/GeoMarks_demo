@@ -2,84 +2,80 @@ package com.zhuchops.geomark;
 
 import android.util.Log;
 
-import com.yandex.mapkit.map.MapWindow;
-
 import java.util.ArrayList;
 
 import javax.json.JsonObject;
 
 //все доступные пользователю слои, данные с прошлого запуска
 public class BoxClass {
-    private final String ACTIVE_LAYERS_DIR = "layers/active_layers_dir";
-    private final String INACTIVE_LAYERS_DIR = "layers/inactive_layers_dir";
-    private MapWindow mapWindow;
-    private ArrayList<GeoLayer> inactiveUsersLayers = new ArrayList<>();
-    private ArrayList<GeoLayer> activeUsersLayers = new ArrayList<>();
+    private static BoxClass instance;
+    private final String LAYERS_DIR = "app_data/layers/";
+    private ArrayList<GeoLayer> allLayers = new ArrayList<>();
+    private ArrayList<String> idsOfActiveLayers = new ArrayList<>();
 
-    public BoxClass(MapWindow mapWindow) {
-        this.mapWindow = mapWindow;
+    private ArrayList<String> ids = new ArrayList<>();
 
-        for (JsonObject layer:
-             FileManager.readLayersFrom(this.ACTIVE_LAYERS_DIR)) {
-            activeUsersLayers.add(Converter.convertLayerFromFile(layer));
-        }
+    private BoxClass() {
+        GeoLayer layer;
 
-        for (JsonObject layer:
-                FileManager.readLayersFrom(this.INACTIVE_LAYERS_DIR)) {
-            inactiveUsersLayers.add(Converter.convertLayerFromFile(layer));
+        for (JsonObject layerObject:
+                FileManager.readLayersFrom(this.LAYERS_DIR)) {
+            layer = Converter.convertLayerFromFile(layerObject);
+            allLayers.add(layer);
+            addIdToTable(layer.getId());
         }
     }
 
-    public ArrayList<GeoLayer> getInactiveUsersLayers() {
-        return inactiveUsersLayers;
+    public static BoxClass getInstance() {
+        if (instance == null) {
+            synchronized (BoxClass.class) {
+                if (instance == null)
+                    instance = new BoxClass();
+            }
+        }
+        return instance;
     }
 
-    public ArrayList<GeoLayer> getActiveUsersLayers() {
-        return activeUsersLayers;
+    public void addIdToActiveIds(String id) {
+        idsOfActiveLayers.add(id);
     }
 
-    public MapWindow getMapWindow() {
-        return this.mapWindow;
-    }
-
-    public void addLayerToActiveUsersLayers(GeoLayer layer) {
-        this.activeUsersLayers.add(layer);
-        this.inactiveUsersLayers.remove(layer);
-    }
-
-    public void removeLayerFromActiveLayers(GeoLayer layer) {
-        this.activeUsersLayers.remove(layer);
-        this.inactiveUsersLayers.add(layer);
+    public void removeIdFromActiveIds(Integer id) {
+        this.idsOfActiveLayers.remove(id);
     }
     
     public void onStop() {
         ArrayList<JsonObject> jsonLayers = new ArrayList<>();
 
         for (GeoLayer layer:
-             this.activeUsersLayers) {
+             this.allLayers) {
             jsonLayers.add(Converter.toFile(layer));
         }
         for (int i = 1; i < 3; i++) {
             Log.i("WRITE", "trying to write layers: attempt " + i);
-            if (FileManager.writeLayersTo(jsonLayers, this.ACTIVE_LAYERS_DIR)) {
+            if (FileManager.writeLayersTo(jsonLayers, this.LAYERS_DIR)) {
                 break;
             } else {
                 Log.e("WRITE", "cant to write layers");
             }
         }
         jsonLayers.clear();
+    }
 
-        for (GeoLayer layer:
-                this.inactiveUsersLayers) {
-            jsonLayers.add(Converter.toFile(layer));
-        }
-        for (int i = 1; i < 3; i++) {
-            Log.i("WRITE", "trying to write layers: attempt " + i);
-            if (FileManager.writeLayersTo(jsonLayers, this.INACTIVE_LAYERS_DIR)) {
-                break;
-            } else {
-            Log.e("WRITE", "cant to write layers");
-            }
-        }
+    public ArrayList<String> getIdsOfActiveLayers() {
+        return this.idsOfActiveLayers;
+    }
+
+    public GeoLayer getLayerWithId(Integer id) {
+        return this.allLayers.get(this.ids.indexOf(id));
+    }
+
+    private void addIdToTable(String id) {
+        this.ids.add(id);
+    }
+
+    public void addNewLayer(GeoLayer layer) {
+        allLayers.add(layer);
+        addIdToTable(layer.getId());
     }
 }

@@ -4,4 +4,5 @@
     <dimen name="mark_normal_height">15dp</dimen>
     <dimen name="mark_selected_width">15dp</dimen>
     <dimen name="mark_selected_height">20dp</dimen>
+    <dimen name="titleNormalTextSize">20sp</dimen>
 </resources>

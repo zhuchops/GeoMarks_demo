@@ -7,6 +7,7 @@ import javax.json.Json;
 import javax.json.JsonObject;
 
 class Converter {
+
     static JsonObject toFile(GeoLayer layer) {
         JsonObject jsonLayer = null;
 
@@ -27,6 +28,7 @@ class Converter {
 
     static GeoLayer convertLayerFromFile(JsonObject jsonLayer) {
         GeoLayer layer = new GeoLayer(
+                jsonLayer.getInt("id"),
                 jsonLayer.getString("name"),
                 jsonLayer.getString("description"),
                 (ArrayList<GeoMark>) jsonLayer.get("layer")
@@ -34,6 +36,7 @@ class Converter {
 
         return layer;
     }
+
 
 //    static GeoMark convertMarkFromFile(JsonObject jsonObject) {
 //        GeoMark mark = null;

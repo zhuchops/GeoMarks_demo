@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">GeoMark</string>
+    <string name="preference_file_key">~7sr41[GASfXY|:</string>
+    <string name="getIdFromSharedPreferences"><![CDATA[\"jgN4^]m?A%1Sv\"&\"]]></string>
+    <string name="box">\@S-7u4K7:YH\"gh^</string>
+    <string name="hintText">Выберете слои, которые будут отображаться на карте</string>
+
+    <string-array name="titlesName">
+        <item>Мои слои</item>
+        <item>Все слои</item>
+    </string-array>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

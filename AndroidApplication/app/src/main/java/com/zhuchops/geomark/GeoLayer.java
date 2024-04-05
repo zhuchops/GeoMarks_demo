@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GeoLayer{
+    private String id;
     private ArrayList<GeoMark> layer;
     private String name;
     private String description;
 
-    public GeoLayer(String name, String description, ArrayList<GeoMark> layer) {
+    public GeoLayer(String id, String name, String description, ArrayList<GeoMark> layer) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.layer = layer;
@@ -46,9 +48,14 @@ public class GeoLayer{
         return description;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
     public HashMap<String, Object> getData() {
         HashMap<String, Object> data = new HashMap<>();
 
+        data.put("id", this.id);
         data.put("name", this.name);
         data.put("description", this.description);
         data.put("layer", this.layer);
