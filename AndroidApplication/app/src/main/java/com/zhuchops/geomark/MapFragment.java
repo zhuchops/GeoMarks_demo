@@ -16,7 +16,12 @@ import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.mapview.MapView;
 import com.zhuchops.geomark.databinding.FragmentMapBinding;
 
-public class MapFragment extends Fragment implements CameraListener {
+import org.json.JSONException;
+
+public class MapFragment extends Fragment
+        implements CameraListener {
+
+    private static final String name = "mapFragment";
     private DisplayActivity displayActivity;
     private MapView mapView;
     private FragmentMapBinding fragmentMapBinding;
@@ -24,6 +29,10 @@ public class MapFragment extends Fragment implements CameraListener {
 
     public MapFragment() {
         super(R.layout.fragment_map);
+    }
+
+    public static String getName() {
+        return name;
     }
 
     @Override
@@ -37,7 +46,11 @@ public class MapFragment extends Fragment implements CameraListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         fragmentMapBinding = FragmentMapBinding.inflate(inflater, container, false);
-        box = BoxClass.getInstance();
+        try {
+            box = BoxClass.getInstance(null);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         displayActivity = (DisplayActivity) getActivity();
         return fragmentMapBinding.getRoot();
     }

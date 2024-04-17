@@ -11,4 +11,9 @@
     </string-array>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="layersfragment">layersFragment</string>
+    <string name="mapfragment">mapFragment</string>
+    <string name="layerViewFragment">addNewLayerFragment</string>
+    <string name="mapNameForUpperPanel">Карта</string>
+    <string name="layersListNameForUpperPanel">Слои</string>
 </resources>

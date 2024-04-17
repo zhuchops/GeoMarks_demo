@@ -9,6 +9,7 @@
     <color name="pressed_active_navigation_icon">#FF66CCFF</color>
     <color name="blackDemiInvisible">#80000000</color>
     <color name="hint">#FF9C9C9C</color>
+    <color name="upper_panel_bg">#FFEDEDED</color>
     <color name="checkedBoxPrimaryColor">#FF0099FF</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>

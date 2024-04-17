@@ -1,19 +1,19 @@
 package com.zhuchops.geomark;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class OuterItem {
-    private List<LayerElement> innerItems;
+    private ArrayList<LayerElement> innerItems;
 
-    public OuterItem(List<LayerElement> innerItems) {
+    public OuterItem(ArrayList<LayerElement> innerItems) {
         this.innerItems = innerItems;
     }
 
-    public List<LayerElement> getInnerItems() {
+    public ArrayList<LayerElement> getInnerItems() {
         return innerItems;
     }
 
-    public void setInnerItems(List<LayerElement> innerItems) {
+    public void setInnerItems(ArrayList<LayerElement> innerItems) {
         this.innerItems = innerItems;
     }
 }

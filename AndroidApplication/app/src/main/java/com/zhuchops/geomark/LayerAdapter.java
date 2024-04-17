@@ -18,6 +18,10 @@ public class LayerAdapter extends RecyclerView.Adapter<LayerAdapter.ViewHolder> 
     private final LayoutInflater inflater;
     private final List<LayerElement> layers;
 
+    public interface OnItemClickListener {
+        void onItemClick(String id);
+    }
+
     public LayerAdapter(Context context, List<LayerElement> layers) {
         this.layers = layers;
         this.inflater = LayoutInflater.from(context);
@@ -37,6 +41,14 @@ public class LayerAdapter extends RecyclerView.Adapter<LayerAdapter.ViewHolder> 
         holder.nameView.setText(layerElement.getName());
         holder.descriptionView.setText(layerElement.getDescription());
         holder.checkBox.setActivated(layerElement.isChecked());
+
+        try {
+            holder.itemView.setOnClickListener(v -> {
+                ((OnItemClickListener) inflater.getContext()).onItemClick(layerElement.getId());
+            });
+        } catch (Exception e) {
+            throw new RuntimeException("Контекст должен реализовывать OnCl" + e);
+        }
     }
 
     @Override
@@ -57,4 +69,6 @@ public class LayerAdapter extends RecyclerView.Adapter<LayerAdapter.ViewHolder> 
             checkBox = view.findViewById(R.id.checkBoxOfList);
         }
     }
+
+
 }

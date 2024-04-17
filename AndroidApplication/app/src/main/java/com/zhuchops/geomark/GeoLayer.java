@@ -1,16 +1,21 @@
 package com.zhuchops.geomark;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class GeoLayer{
-    private String id;
-    private ArrayList<GeoMark> layer;
-    private String name;
-    private String description;
+public class GeoLayer {
+    private final String id;
+    private final byte[] imageData;
+    private final ArrayList<GeoMark> layer;
+    private final String name;
+    private final String description;
 
-    public GeoLayer(String id, String name, String description, ArrayList<GeoMark> layer) {
+    public ArrayList<GeoMark> getLayer() {
+        return layer;
+    }
+
+    public GeoLayer(String id, byte[] imageData, String name, String description, ArrayList<GeoMark> layer) {
         this.id = id;
+        this.imageData = imageData;
         this.name = name;
         this.description = description;
         this.layer = layer;
@@ -22,6 +27,10 @@ public class GeoLayer{
 
     public void addMark(int index, GeoMark mark) {
         this.layer.add(index, mark);
+    }
+
+    public byte[] getImageData() {
+        return imageData;
     }
 
     public void removeMark(int index) {
@@ -52,14 +61,15 @@ public class GeoLayer{
         return this.id;
     }
 
-    public HashMap<String, Object> getData() {
-        HashMap<String, Object> data = new HashMap<>();
-
-        data.put("id", this.id);
-        data.put("name", this.name);
-        data.put("description", this.description);
-        data.put("layer", this.layer);
-
-        return data;
-    }
+//    public HashMap<String, Object> getData() {
+//        HashMap<String, Object> data = new HashMap<>();
+//
+//        data.put("id", this.id);
+//        data.put("imageData", this.imageData);
+//        data.put("name", this.name);
+//        data.put("description", this.description);
+//        data.put("layer", this.layer);
+//
+//        return data;
+//    }
 }

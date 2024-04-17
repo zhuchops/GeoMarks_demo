@@ -3,36 +3,74 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="25dp"
+    android:layout_height="match_parent">
 
-    style=""
-    >
-
-    <TextView
-        android:id="@+id/mapLayerNameView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Карта"
-        android:textSize="32dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <ImageButton
-        android:id="@+id/optionButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-
-        android:src="@drawable/option_gear_button"
-        android:scaleType="centerInside"
-        android:background="@color/invisible"
-
+    <View
+        android:id="@+id/upperBg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/upper_panel_size"
 
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:contentDescription="TODO" />
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="25dp">
+
+        <TextView
+            android:id="@+id/layerNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Карта"
+            android:textSize="32dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <LinearLayout
+            android:id="@+id/setting_options_layer_text_view_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/context_menu_bg"
+            android:orientation="vertical"
+
+            android:visibility="gone"
+
+            app:layout_constraintRight_toRightOf="@id/settingsButton"
+            app:layout_constraintTop_toTopOf="@id/settingsButton"
+            android:paddingTop="50dp">
+
+            <Button
+                android:id="@+id/changeDescriptionButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="поменять описание"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+
+                android:background="@color/invisible"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/settingsButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:src="@drawable/option_gear_button"
+            android:scaleType="fitCenter"
+            android:background="@color/invisible"
+
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:contentDescription="TODO" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

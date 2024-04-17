@@ -10,24 +10,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class ViewPagerAdapter extends RecyclerView.Adapter<ViewPagerAdapter.ViewHolder> {
 
-    private List<OuterItem> outerItems;
+    private final List<OuterItem> outerItems;
     private final LayoutInflater inflater;
 
-    public RecyclerAdapter(Context context, List<OuterItem> outerItems) {
+    public ViewPagerAdapter(Context context, List<OuterItem> outerItems) {
         this.outerItems = outerItems;
         this.inflater = LayoutInflater.from(context);
     }
+
     @NonNull
     @Override
-    public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewPagerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recycler_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewPagerAdapter.ViewHolder holder, int position) {
         OuterItem outerItem = outerItems.get(position);
         holder.recyclerView.setAdapter(new LayerAdapter(inflater.getContext(), outerItem.getInnerItems()));
         }

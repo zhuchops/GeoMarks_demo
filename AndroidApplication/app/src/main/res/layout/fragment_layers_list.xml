@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:layout_marginTop="@dimen/upper_panel_size">
 
     <LinearLayout
         android:id="@+id/titlesNamesContainer"
@@ -32,7 +34,7 @@
 
                 style="@style/titleNamesButtonStyle.Selected"
 
-                android:text="Null"
+                android:text="Мои слои"
                 />
         </LinearLayout>
 
@@ -50,7 +52,7 @@
                 android:layout_height="wrap_content"
                 style="@style/titleNamesButtonStyle"
 
-                android:text="Null"
+                android:text="Другие слои"
                 />
         </LinearLayout>
 
@@ -74,13 +76,11 @@
         app:layout_constraintTop_toBottomOf="@+id/titlesNamesContainer"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerContainer"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

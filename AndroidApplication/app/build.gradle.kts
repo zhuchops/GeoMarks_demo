@@ -6,13 +6,13 @@ android {
     namespace = "com.zhuchops.geomark"
     compileSdk = 34
 
-    buildFeatures {
+    buildFeatures { 
         viewBinding = true
     }
 
     defaultConfig {
         applicationId = "com.zhuchops.geomark"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"

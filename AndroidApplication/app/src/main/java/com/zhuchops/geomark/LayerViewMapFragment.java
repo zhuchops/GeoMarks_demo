@@ -1,5 +1,6 @@
 package com.zhuchops.geomark;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,20 +15,23 @@ import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CameraUpdateReason;
 import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.mapview.MapView;
-import com.zhuchops.geomark.databinding.FragmentNewLayerBinding;
+import com.zhuchops.geomark.databinding.FragmentLayerViewMapBinding;
 
-public class NewLayerFragment extends Fragment implements CameraListener {
+import org.json.JSONException;
 
-    private FragmentNewLayerBinding binding;
+public class LayerViewMapFragment extends Fragment
+        implements CameraListener {
+
+    private FragmentLayerViewMapBinding binding;
     private BoxClass box;
     private DisplayActivity displayActivity;
     private MapView mapView;
 
     GeoLayer modifyingLayer;
 
-    public NewLayerFragment(GeoLayer modifyingLayer) {
-        super(R.layout.fragment_new_layer);
-        this.modifyingLayer = modifyingLayer;
+
+    public LayerViewMapFragment() {
+        super(R.layout.fragment_layer_view);
     }
 
     @Override
@@ -39,10 +43,19 @@ public class NewLayerFragment extends Fragment implements CameraListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentNewLayerBinding.inflate(inflater, container, false);
-        displayActivity = (DisplayActivity) getActivity();
-        box = BoxClass.getInstance();
+        binding = FragmentLayerViewMapBinding.inflate(inflater, container, false);
+        try {
+            box = BoxClass.getInstance(null);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         return binding.getRoot();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        displayActivity = (DisplayActivity) getActivity();
     }
 
     @Override
@@ -51,6 +64,7 @@ public class NewLayerFragment extends Fragment implements CameraListener {
 
         mapView = binding.mapView;
         mapView.getMapWindow().getMap().move(mapView.getMapWindow().getMap().getCameraPosition());
+        update();
 
         mapView.getMapWindow().getMap().addCameraListener(this);
     }
@@ -59,7 +73,7 @@ public class NewLayerFragment extends Fragment implements CameraListener {
     public void onStart() {
         super.onStart();
         mapView.onStart();
-        MarkManager.placeLayersMark(binding.marksLayout, this.modifyingLayer, mapView);
+        update();
     }
 
     @Override
@@ -71,10 +85,23 @@ public class NewLayerFragment extends Fragment implements CameraListener {
     @Override
     public void onCameraPositionChanged(@NonNull Map map, @NonNull CameraPosition cameraPosition,
                                         @NonNull CameraUpdateReason cameraUpdateReason, boolean b) {
-        MarkManager.placeLayersMark(binding.marksLayout, this.modifyingLayer, mapView);
+        update();
     }
 
     public MapView getMapView() {
         return mapView;
+    }
+
+    public void setNewLayer(GeoLayer layer) {
+        modifyingLayer = layer;
+        if (this.isVisible()) {
+            update();
+        }
+    }
+
+    private void update() {
+        if (modifyingLayer != null) {
+            MarkManager.placeLayersMark(binding.marksLayout, modifyingLayer, mapView);
+        }
     }
 }

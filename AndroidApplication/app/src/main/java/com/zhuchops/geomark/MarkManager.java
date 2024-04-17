@@ -16,7 +16,7 @@ public class MarkManager{
     static private HashMap<MapView, ArrayList<Integer>> markIdsOfMapView = new HashMap<>();
 
     static void placeActiveMarks(ConstraintLayout layout, BoxClass box, MapView mapView) {
-        ArrayList<Integer> idsOfActiveLayers = box.getIdsOfActiveLayers();
+        ArrayList<String> idsOfActiveLayers = box.getIdsOfActiveLayers();
         GeoLayer layer;
         for (int i = 0; i < idsOfActiveLayers.size(); i++) {
             layer = box.getLayerWithId(idsOfActiveLayers.get(i));

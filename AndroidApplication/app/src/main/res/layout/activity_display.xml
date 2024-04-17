@@ -5,75 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DisplayActivity"
-    android:id="@+id/displayLayout"
-    android:background="#FFEDEDED">
+    android:id="@+id/displayLayout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/upperFragments"
+        android:id="@+id/activeFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
 
         app:layout_constraintVertical_weight="90"
 
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/navigationBarFragment">
+        app:layout_constraintBottom_toTopOf="@+id/navigationBarFragment">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/mapFragment"
+
+        <FrameLayout
+            android:id="@+id/activeFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.zhuchops.geomark.MapFragment"
+            android:layout_height="0dp"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/newLayerFragment"
+        <FrameLayout
+            android:id="@+id/upperPanel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.zhuchops.geomark.NewLayerFragment"
+            android:layout_height="0dp"
 
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/upperPanelFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.zhuchops.geomark.UpperPanelFragment"
-
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/layersListFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:name="com.zhuchops.geomark.LayersListFragment"
-
-            android:visibility="gone"
-            android:background="@color/white"
-            android:elevation="5dp"
-
-            android:layout_marginTop="100dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.fragment.app.FragmentContainerView
+    <FrameLayout
         android:id="@+id/navigationBarFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="com.zhuchops.geomark.NavigationBarFragment"
 
         app:layout_constraintVertical_weight="10"
 
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/upperFragments"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@id/activeFragmentContainer"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

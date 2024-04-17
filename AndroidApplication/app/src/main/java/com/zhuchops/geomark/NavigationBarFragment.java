@@ -19,22 +19,19 @@ public class NavigationBarFragment extends Fragment implements View.OnClickListe
 
     private FragmentNavigationBarBinding binding;
     private DisplayActivity activity;
-    private final HashMap<Integer, Integer> buttonToFragmentsHash = new HashMap<>();
-    private final HashMap<Integer, Integer> fragmentsToButtonsHash = new HashMap<>();
+    public final HashMap<Integer, Class<?>> buttonToFragmentsHash = new HashMap<>();
+    public final HashMap<Class<?>, Integer> fragmentsToButtonsHash = new HashMap<>();
+
+    public Class<?> activeFragment;
 
     interface OnChangeWindowListener {
-        void onChangeWindow(int windowId);
+        void onChangeWindow(Class<?> activeFragment);
     }
 
     private OnChangeWindowListener changeWindowListener;
 
     public NavigationBarFragment() {
         super(R.layout.fragment_navigation_bar);
-        buttonToFragmentsHash.put(R.id.map_button, R.id.mapFragment);
-        buttonToFragmentsHash.put(R.id.layers_button, R.id.layersListFragment);
-        buttonToFragmentsHash.put(R.id.profile_button, R.id.mapFragment);
-        fragmentsToButtonsHash.put(R.id.mapFragment, R.id.map_button);
-        fragmentsToButtonsHash.put(R.id.layersListFragment, R.id.layers_button);
     }
 
     @Override
@@ -53,6 +50,8 @@ public class NavigationBarFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentNavigationBarBinding.inflate(inflater, container, false);
+        activeFragment = MapFragment.class;
+
         return binding.getRoot();
     }
 
@@ -64,6 +63,12 @@ public class NavigationBarFragment extends Fragment implements View.OnClickListe
             imageButton.setOnClickListener(this);
         }
         binding.mapButton.setActivated(true);
+
+        buttonToFragmentsHash.put(R.id.map_button, MapFragment.class);
+        buttonToFragmentsHash.put(R.id.layers_button, LayersListFragment.class);
+        buttonToFragmentsHash.put(R.id.profile_button, MapFragment.class);
+        fragmentsToButtonsHash.put(MapFragment.class, R.id.map_button);
+        fragmentsToButtonsHash.put(LayersListFragment.class, R.id.layers_button);
     }
 
     @Override
@@ -71,8 +76,20 @@ public class NavigationBarFragment extends Fragment implements View.OnClickListe
         changeWindowListener.onChangeWindow(buttonToFragmentsHash.get(view.getId()));
     }
 
-    public void setNewActivated(int oldId, int newId) {
-        activity.findViewById(fragmentsToButtonsHash.get(oldId)).setActivated(false);
-        activity.findViewById(fragmentsToButtonsHash.get(newId)).setActivated(true);
+    public void setNewActivated(Class<?> newId) {
+        if (activeFragment.equals(MapFragment.class)) {
+            binding.mapButton.setActivated(false);
+        }
+        else if (activeFragment.equals(LayersListFragment.class)) {
+            binding.layersButton.setActivated(false);
+        }
+        if (newId.equals(MapFragment.class)) {
+            binding.mapButton.setActivated(true);
+            activeFragment = MapFragment.class;
+        }
+        else if (newId.equals(LayersListFragment.class)) {
+            binding.layersButton.setActivated(true);
+            activeFragment = LayersListFragment.class;
+        }
     }
 }

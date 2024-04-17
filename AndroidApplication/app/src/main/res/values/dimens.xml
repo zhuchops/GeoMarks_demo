@@ -5,4 +5,5 @@
     <dimen name="mark_selected_width">15dp</dimen>
     <dimen name="mark_selected_height">20dp</dimen>
     <dimen name="titleNormalTextSize">20sp</dimen>
+    <dimen name="upper_panel_size">100dp</dimen>
 </resources>

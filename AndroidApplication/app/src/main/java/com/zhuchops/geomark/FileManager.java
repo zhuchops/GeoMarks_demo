@@ -2,35 +2,54 @@ package com.zhuchops.geomark;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonWriter;
-
 public class FileManager {
-    static boolean writeLayerTo(JsonObject jsonLayer, String path) {
+    static boolean writeLayerTo(JSONObject jsonLayer, String dirPath) throws JSONException {
         Log.i("WRITE", "try to write a layer");
-        try (JsonWriter jsonWriter = Json.createWriter(new FileOutputStream(path))) {
-            jsonWriter.write(jsonLayer);
+
+        String fileName = jsonLayer.getString("id") + ":" + jsonLayer.get("name");
+        File directory = new File(dirPath);
+        if (!directory.exists()) {
+            if (directory.mkdirs()) {
+                Log.i("DIR", "new directory created: " + directory.toString());
+            } else {
+                Log.w("DIR", "cant make a directory: " + directory.toString());
+            }
+
+        }
+        try (FileOutputStream fos = new FileOutputStream(new File(dirPath, fileName))) {
+            String jsonString = jsonLayer.toString();
+            fos.write(jsonString.getBytes());
         } catch (IOException e) {
-            Log.e("WRITE", "cant write an object");
+            Log.e("WRITE", "cant write an object, " + e);
             return false;
         }
         return true;
     }
 
-    static JsonObject readLayerFrom(String path) {
-        JsonObject layer = null;
+    static JSONObject readLayerFrom(String path) throws JSONException {
+        JSONObject layer = null;
 
         Log.i("READ", "try to read a layer");
-        try (JsonReader jsonReader = Json.createReader(new FileInputStream(path))) {
-            layer = jsonReader.readObject();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(path))))) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            String jsonString = stringBuilder.toString();
+            layer = new JSONObject(jsonString);
             Log.i("READ", "successful reading");
         } catch (IOException e) {
             Log.e("READ", "cant read layer from file");
@@ -39,13 +58,13 @@ public class FileManager {
         return layer;
     }
 
-    static ArrayList<JsonObject> readLayersFrom(String dirPath) {
-        ArrayList<JsonObject> layers = new ArrayList<>();
+    static ArrayList<JSONObject> readLayersFrom(String dirPath) throws JSONException {
+        ArrayList<JSONObject> layers = new ArrayList<>();
 
         File dir = new File(dirPath);
         File[] files = dir.listFiles();
 
-        JsonObject layer = null;
+        JSONObject layer = null;
         Log.i("READ", "try to read a directory");
         if (files != null) {
             Log.i("READ", "successful reading");
@@ -63,11 +82,10 @@ public class FileManager {
         return layers;
     }
 
-    static boolean writeLayersTo(ArrayList<JsonObject> layers, String dirPath) {
-        for (JsonObject jsonLayer:
+    static boolean writeLayersTo(ArrayList<JSONObject> layers, String dirPath) throws JSONException {
+        for (JSONObject jsonLayer:
              layers) {
-            String path = dirPath + "/" + jsonLayer.getString("name");
-            FileManager.writeLayerTo(jsonLayer, path);
+            FileManager.writeLayerTo(jsonLayer, dirPath);
         }
 
         return true;

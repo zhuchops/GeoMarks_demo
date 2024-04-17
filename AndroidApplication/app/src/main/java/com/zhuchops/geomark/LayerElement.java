@@ -1,23 +1,23 @@
 package com.zhuchops.geomark;
 
-import android.media.Image;
-
 public class LayerElement {
 
-    private Image image;
+    private String layerId;
+    private byte[] imageData;
     private String name;
     private String description;
     private boolean isChecked;
 
-    public LayerElement(Image image, String name, String description, boolean isChecked) {
-        this.image = image;
+    public LayerElement(String layerId, byte[] imageData, String name, String description, boolean isChecked) {
+        this.layerId = layerId;
+        this.imageData = imageData;
         this.name = name;
         this.description = description;
         this.isChecked = isChecked;
     }
 
-    public Image getImage() {
-        return image;
+    public byte[] getImageData() {
+        return imageData;
     }
 
     public String getName() {
@@ -32,8 +32,8 @@ public class LayerElement {
         return isChecked;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 
     public void setName(String name) {
@@ -46,5 +46,9 @@ public class LayerElement {
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public String getId() {
+        return layerId;
     }
 }
