@@ -93,4 +93,10 @@ public class BoxClass {
     public void changeGeoLayer(String id, GeoLayer newLayer) {
         allLayers.set(ids.indexOf(id), newLayer);
     }
+
+    public void deleteLayer(GeoLayer layer) {
+        int id = ids.indexOf(layer.getId());
+        allLayers.remove(id);
+        ids.remove(id);
+    }
 }

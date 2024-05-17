@@ -17,7 +17,7 @@ class Converter {
         jsonLayer.put("description", layer.getDescription());
         jsonLayer.put("imageData", Base64.getEncoder().encodeToString(layer.getImageData()));
         for (GeoMark mark:
-                layer.getLayer()) {
+                layer.getMarks()) {
             jsonMarkArray.put(Converter.toFile(mark));
         }
         jsonLayer.put("marks", jsonMarkArray);

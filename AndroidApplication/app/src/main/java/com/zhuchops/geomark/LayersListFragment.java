@@ -34,11 +34,12 @@ public class LayersListFragment extends Fragment
         activity.onOpenLayer(layer);
     }
 
-    interface OnAddNewLayerListener {
+    interface OnOpenWindowListener {
         void onOpenLayer(GeoLayer layer);
+        void onOpenMark(GeoMark mark);
     }
 
-    private OnAddNewLayerListener onOpenLayerListener;
+    private OnOpenWindowListener onOpenWindowListener;
 
     public LayersListFragment() {
         super(R.layout.fragment_layers_list);
@@ -49,7 +50,7 @@ public class LayersListFragment extends Fragment
         super.onAttach(context);
         activity = (DisplayActivity) getActivity();
         try {
-            onOpenLayerListener = (OnAddNewLayerListener) context;
+            onOpenWindowListener = (OnOpenWindowListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context
             + " должен реализовывать интерфейс OnFragmentInteractionListener");
@@ -126,7 +127,7 @@ public class LayersListFragment extends Fragment
                     new ArrayList<GeoMark>()
             );
             box.addNewLayer(newLayer);
-            onOpenLayerListener.onOpenLayer(newLayer);
+            onOpenWindowListener.onOpenLayer(newLayer);
             try {
                 update();
             } catch (JSONException e) {

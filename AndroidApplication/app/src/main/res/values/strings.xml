@@ -16,4 +16,12 @@
     <string name="layerViewFragment">addNewLayerFragment</string>
     <string name="mapNameForUpperPanel">Карта</string>
     <string name="layersListNameForUpperPanel">Слои</string>
+    <string name="change_description_text">Изменить описание</string>
+    <string name="delete_layer_text">удалить слой</string>
+    <string name="change_name_text">изменить название</string>
+    <string name="change_image_text">изменить фото</string>
+    <string name="editable">editable</string>
+    <string name="admit_changes_text">применить изменения</string>
+    <string name="none_editable">none_editable\n</string>
+    <string name="change_text">изменить</string>
 </resources>

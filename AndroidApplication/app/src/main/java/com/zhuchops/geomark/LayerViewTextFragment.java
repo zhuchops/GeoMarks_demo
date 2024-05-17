@@ -15,6 +15,8 @@ import com.zhuchops.geomark.databinding.FragmentLayerViewTextBinding;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
+
 public class LayerViewTextFragment extends Fragment {
 
     private FragmentLayerViewTextBinding binding;
@@ -22,8 +24,21 @@ public class LayerViewTextFragment extends Fragment {
     private BoxClass box;
     private GeoLayer layer;
 
+    public void onOptionClick(String text) {
+        if (text.equals(getString(R.string.change_description_text))) {
+            setDescriptionEditable(true);
+        } else if (text.equals(getString(R.string.delete_layer_text))) {
+            deleteCurrentLayer();
+        } else if (text.equals(getString(R.string.change_name_text))) {
+
+        } else if (text.equals(getString(R.string.change_image_text))) {
+
+        }
+    }
+
     interface OnSaveListener {
-        void save(GeoLayer layer);
+        void saveLayer(GeoLayer layer);
+        void saveMark(GeoMark mark);
     }
 
     public LayerViewTextFragment() {
@@ -57,6 +72,17 @@ public class LayerViewTextFragment extends Fragment {
         update();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ArrayList<String> options = new ArrayList<>();
+        options.add(getString(R.string.change_name_text));
+        options.add(getString(R.string.change_image_text));
+        options.add(getString(R.string.change_description_text));
+        options.add(getString(R.string.delete_layer_text));
+        activity.updateUpperPanel(LayersListFragment.class, options);
+    }
 
     public void setNewLayer(GeoLayer layer) {
         Log.i("Fragment", "LayerViewTextFragment: is setNewLayer");
@@ -76,29 +102,35 @@ public class LayerViewTextFragment extends Fragment {
 
     public void setDescriptionEditable(boolean mode) {
         if (mode) {
-            binding.editableDescriptionOfLayer.setText(
-                    binding.descriptionOfLayer.getText()
-            );
-            binding.editableDescriptionOfLayer.setVisibility(View.VISIBLE);
-            binding.descriptionOfLayer.setVisibility(View.GONE);
+            binding.descriptionOfLayer.setEnabled(true);
         } else {
-            binding.descriptionOfLayer.setText(
-                    binding.editableDescriptionOfLayer.getText()
-            );
-            binding.editableDescriptionOfLayer.setVisibility(View.GONE);
-            binding.descriptionOfLayer.setVisibility(View.VISIBLE);
+            binding.descriptionOfLayer.setEnabled(false);
+            saveDataToLayer();
             save();
         }
     }
 
-    public void save() {
-        activity.save(
-                new GeoLayer(
-                        layer.getId(),
-                        layer.getImageData(),
-                        layer.getName(),
-                        binding.descriptionOfLayer.getText().toString(),
-                        layer.getLayer())
+    public void saveDataToLayer() {
+        this.layer = new GeoLayer(
+                layer.getId(),
+                layer.getImageData(),
+                layer.getName(),
+                binding.descriptionOfLayer.getText().toString(),
+                layer.getMarks()
         );
+    }
+
+    public void save() {
+        activity.saveLayer(layer);
+    }
+
+    public void deleteCurrentLayer() {
+        try {
+            BoxClass.getInstance(null).deleteLayer(layer);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        activity.onChangeWindow(LayersListFragment.class);
     }
 }

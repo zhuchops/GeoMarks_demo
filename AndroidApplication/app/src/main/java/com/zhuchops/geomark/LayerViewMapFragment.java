@@ -20,18 +20,19 @@ import com.zhuchops.geomark.databinding.FragmentLayerViewMapBinding;
 import org.json.JSONException;
 
 public class LayerViewMapFragment extends Fragment
-        implements CameraListener {
+        implements CameraListener,
+                View.OnClickListener {
 
     private FragmentLayerViewMapBinding binding;
     private BoxClass box;
-    private DisplayActivity displayActivity;
+    private DisplayActivity activity;
     private MapView mapView;
-
+    private MarkViewFragment markViewFragment;
     GeoLayer modifyingLayer;
 
 
     public LayerViewMapFragment() {
-        super(R.layout.fragment_layer_view);
+        super(R.layout.fragment_layer_view_map);
     }
 
     @Override
@@ -49,13 +50,21 @@ public class LayerViewMapFragment extends Fragment
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+        markViewFragment = new MarkViewFragment();
+
+        activity.getSupportFragmentManager().beginTransaction()
+                .add(R.id.markViewLayout, markViewFragment)
+                .hide(markViewFragment)
+                .commit();
+
         return binding.getRoot();
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        displayActivity = (DisplayActivity) getActivity();
+        activity = (DisplayActivity) getActivity();
     }
 
     @Override
@@ -67,6 +76,8 @@ public class LayerViewMapFragment extends Fragment
         update();
 
         mapView.getMapWindow().getMap().addCameraListener(this);
+
+        binding.addMarkButton.setOnClickListener(this);
     }
 
     @Override
@@ -80,6 +91,13 @@ public class LayerViewMapFragment extends Fragment
     public void onStop() {
         mapView.onStop();
         super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        activity.updateUpperPanel(LayerViewMapFragment.class);
     }
 
     @Override
@@ -103,5 +121,29 @@ public class LayerViewMapFragment extends Fragment
         if (modifyingLayer != null) {
             MarkManager.placeLayersMark(binding.marksLayout, modifyingLayer, mapView);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(binding.addMarkButton)) {
+            GeoMark mark = new GeoMark(
+                    "0.0", "0.0",
+                    modifyingLayer.getSize(),
+                    "no name",
+                    "no description"
+            );
+            modifyingLayer.addMark(mark);
+            save();
+            update();
+            onOpenMark(mark);
+        }
+    }
+
+    public void save() {
+        activity.saveLayer(modifyingLayer);
+    }
+
+    public void onOpenMark(GeoMark mark) {
+        activity.onOpenMark(mark);
     }
 }

@@ -2,6 +2,7 @@ package com.zhuchops.geomark;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -13,11 +14,12 @@ import com.zhuchops.geomark.databinding.ActivityDisplayBinding;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DisplayActivity extends AppCompatActivity
         implements NavigationBarFragment.OnChangeWindowListener,
-                    LayersListFragment.OnAddNewLayerListener,
+        LayersListFragment.OnOpenWindowListener,
                     UpperPanelFragment.OnGetLayerNameListener,
                     LayerAdapter.OnItemClickListener,
                     UpperPanelFragment.OnChangeEditModeOfDescriptionListener,
@@ -30,6 +32,7 @@ public class DisplayActivity extends AppCompatActivity
     private UpperPanelFragment upperPanelFragment;
     private NavigationBarFragment navigationBarFragment;
     private LayerViewFragment layerViewFragment;
+    private MarkViewFragment markViewFragment;
 
     private final HashMap<Class<?>, Fragment> classToFragment = new HashMap<>();
 
@@ -79,6 +82,12 @@ public class DisplayActivity extends AppCompatActivity
                 .hide(layerViewFragment)
                 .commit();
 
+        markViewFragment = new MarkViewFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.markViewLayout, markViewFragment)
+                .hide(markViewFragment)
+                .commit();
+
         classToFragment.put(MapFragment.class, mapFragment);
         classToFragment.put(LayersListFragment.class, layersListFragment);
         classToFragment.put(LayerViewFragment.class, layerViewFragment);
@@ -114,6 +123,15 @@ public class DisplayActivity extends AppCompatActivity
             upperPanelFragment.setMode(UpperPanelFragment.LAYER_VIEW_MAP_MODE);
     }
 
+    public void updateUpperPanel(Class<?> window, ArrayList<String> options) {
+        updateUpperPanel(window);
+        upperPanelFragment.clearOptions();
+        for (String option:
+             options) {
+            upperPanelFragment.addOption(option);
+        }
+    }
+
     @Override
     public void onChangeWindow(Class<?> window) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -137,6 +155,16 @@ public class DisplayActivity extends AppCompatActivity
     }
 
     @Override
+    public void onOpenMark(GeoMark mark) {
+        markViewFragment.setNewMark(mark);
+        getSupportFragmentManager().beginTransaction()
+                .show(markViewFragment)
+                .commit();
+
+        binding.markViewLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public String getLayerName() {
         return layerViewFragment.getLayerName();
     }
@@ -157,7 +185,24 @@ public class DisplayActivity extends AppCompatActivity
     }
 
     @Override
-    public void save(GeoLayer layer) {
-        layerViewFragment.save(layer);
+    public void saveLayer(GeoLayer layer) {
+        layerViewFragment.saveLayer(layer);
+    }
+
+    public void saveMark(GeoMark mark) {
+        layerViewFragment.saveMark(mark);
+    }
+
+    public void onCloseMark() {
+        getSupportFragmentManager().beginTransaction()
+                .hide(markViewFragment)
+                .commit();
+    }
+
+    public void onOptionClick(String text) {
+        Fragment activeFragment = classToFragment.get(activeWindow);
+        if (activeFragment instanceof LayerViewFragment) {
+            ((LayerViewFragment) activeFragment).onOptionClick(text);
+        }
     }
 }

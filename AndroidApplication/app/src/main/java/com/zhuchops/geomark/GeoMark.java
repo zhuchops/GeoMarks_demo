@@ -1,20 +1,22 @@
 package com.zhuchops.geomark;
 
-import android.view.View;
-
 import java.util.HashMap;
 
 public class GeoMark {
     private int number;
-    private int id;
+    private String id;
     private String name;
     private String description;
     private String x, y;
 
     public GeoMark(String x, String y, int number, String name, String description) {
+        this(IdGenerator.generateId(), x, y, number, name, description);
+    }
+
+    public GeoMark(String id, String x, String y, int number, String name, String description) {
+        this.id = id;
         this.x = x; this.y = y;
         this.number = number;
-        this.id = View.generateViewId();
         this.name = name;
         this.description = description;
     }
@@ -31,7 +33,7 @@ public class GeoMark {
         return number;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

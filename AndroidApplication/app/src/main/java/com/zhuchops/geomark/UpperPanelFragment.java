@@ -2,9 +2,11 @@ package com.zhuchops.geomark;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,9 +47,13 @@ public class UpperPanelFragment extends Fragment
         if (v.equals(binding.settingsButton)) {
             if (currentMode == LAYER_VIEW_TEXT_MODE) {
                 if (currentState == READING_STATE) {
-                    if (binding.settingOptionsLayerTextViewContainer.getVisibility() == View.GONE)
+                    if (binding.settingOptionsLayerTextViewContainer.getVisibility() == View.GONE) {
+                        binding.settingsButtonBg.setVisibility(View.VISIBLE);
                         binding.settingOptionsLayerTextViewContainer.setVisibility(View.VISIBLE);
-                    else binding.settingOptionsLayerTextViewContainer.setVisibility(View.GONE);
+                    } else {
+                        binding.settingsButtonBg.setVisibility(View.GONE);
+                        binding.settingOptionsLayerTextViewContainer.setVisibility(View.GONE);
+                    }
                 } else if (currentState == EDITING_STATE) {
                     activity.onEndEdit();
                     binding.settingsButton.
@@ -55,16 +61,32 @@ public class UpperPanelFragment extends Fragment
                     currentState = READING_STATE;
                 }
             }
+        } else if (v instanceof Button) {
+            binding.settingsButtonBg.setVisibility(View.GONE);
+            binding.settingOptionsLayerTextViewContainer.setVisibility(View.GONE);
+            activity.onOptionClick(((Button) v).getText().toString());
         }
-        if (v.equals(binding.changeDescriptionButton)) {
-            if (currentState == READING_STATE) {
-                activity.onBeginEdit();
-                binding.settingsButton.setImageDrawable(activity.getDrawable(R.drawable.check_icon_done));
-                currentState = EDITING_STATE;
-                binding.settingsButton.setActivated(true);
-                binding.settingOptionsLayerTextViewContainer.setVisibility(View.GONE);
-            }
+    }
+
+    public void setSaveButtonVisible(boolean mode) {
+        if (mode) {
+
         }
+    }
+
+    public void addOption(String text) {
+        ContextThemeWrapper customTheme = new ContextThemeWrapper(
+                getContext(), R.style.optionButtonStyle);
+        Button option = new Button(getContext());
+        option.setText(text);
+        option.setOnClickListener(this);
+        binding.settingOptionsLayerTextViewContainer
+                .addView(option);
+    }
+
+    public void clearOptions() {
+        binding.settingOptionsLayerTextViewContainer
+                .removeAllViews();
     }
 
     public UpperPanelFragment() {
@@ -96,7 +118,6 @@ public class UpperPanelFragment extends Fragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.settingsButton.setOnClickListener(this);
-        binding.changeDescriptionButton.setOnClickListener(this);
     }
 
     public void setMode(int mode) {

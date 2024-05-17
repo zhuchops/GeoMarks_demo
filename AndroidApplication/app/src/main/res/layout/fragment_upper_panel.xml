@@ -30,30 +30,31 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+        <View
+            android:id="@+id/settingsButtonBg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+
+            android:background="@drawable/settings_bg"
+
+            android:visibility="gone"
+
+            app:layout_constraintTop_toTopOf="@id/settingsButton"
+            app:layout_constraintLeft_toLeftOf="@id/settingsButton"
+            app:layout_constraintRight_toRightOf="@id/settingsButton"
+            app:layout_constraintBottom_toBottomOf="@id/settingsButton"/>
+
         <LinearLayout
             android:id="@+id/setting_options_layer_text_view_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/context_menu_bg"
+            android:background="@drawable/options_bg"
             android:orientation="vertical"
 
             android:visibility="gone"
 
-            app:layout_constraintRight_toRightOf="@id/settingsButton"
-            app:layout_constraintTop_toTopOf="@id/settingsButton"
-            android:paddingTop="50dp">
-
-            <Button
-                android:id="@+id/changeDescriptionButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="поменять описание"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:gravity="center"
-
-                android:background="@color/invisible"/>
+            app:layout_constraintTop_toBottomOf="@id/settingsButtonBg"
+            app:layout_constraintRight_toRightOf="@id/settingsButtonBg">
 
         </LinearLayout>
 

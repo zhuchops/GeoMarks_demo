@@ -30,7 +30,17 @@ public class LayerViewFragment extends Fragment
     LayerViewMapFragment mapFragment;
     LayerViewTextFragment textFragment;
     DisplayActivity activity;
-    Fragment active_window;
+    Fragment activeWindow;
+
+    public void onOptionClick(String text) {
+        if (activeWindow instanceof LayerViewTextFragment) {
+            ((LayerViewTextFragment) activeWindow).onOptionClick(text);
+        }
+    }
+
+    interface OnSaveListener {
+        void saveLayer(GeoLayer layer);
+    }
 
     public static final List<Fragment> fragmentList = new ArrayList<>();
 
@@ -53,23 +63,10 @@ public class LayerViewFragment extends Fragment
         fragmentList.add(textFragment);
         fragmentList.add(mapFragment);
 
-        active_window = textFragment;
+        activeWindow = textFragment;
         binding.toTextViewButton.setActivated(true);
 
         binding.viewPager.setUserInputEnabled(false);
-//        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-//            @Override
-//            public void onPageSelected(int position) {
-//                super.onPageSelected(position);
-//                if (!fragmentList.get(position).equals(active_window))
-//                    switch (position) {
-//                        case 0:
-//                            onClick(binding.toTextViewButton);
-//                        case 1:
-//                            onClick(binding.toMapViewButton);
-//                    }
-//            }
-//        });
 
         return binding.getRoot();
     }
@@ -108,21 +105,19 @@ public class LayerViewFragment extends Fragment
     @Override
     public void onClick(View v) {
         if (v.equals(binding.toMapViewButton)) {
-            if (active_window.equals(textFragment)) {
+            if (activeWindow.equals(textFragment)) {
                 binding.viewPager.setCurrentItem(1);
-                active_window = mapFragment;
+                activeWindow = mapFragment;
                 binding.toTextViewButton.setActivated(false);
                 binding.toMapViewButton.setActivated(true);
-                activity.updateUpperPanel(mapFragment.getClass());
             }
         }
         if (v.equals(binding.toTextViewButton)) {
-            if (active_window.equals(mapFragment)) {
+            if (activeWindow.equals(mapFragment)) {
                 binding.viewPager.setCurrentItem(0);
-                active_window = textFragment;
+                activeWindow = textFragment;
                 binding.toMapViewButton.setActivated(false);
                 binding.toTextViewButton.setActivated(true);
-                activity.updateUpperPanel(textFragment.getClass());
             }
         }
     }
@@ -132,7 +127,7 @@ public class LayerViewFragment extends Fragment
     }
 
     @Override
-    public void save(GeoLayer layer) {
+    public void saveLayer(GeoLayer layer) {
         this.layer = layer;
         try {
             BoxClass.getInstance(null)
@@ -144,6 +139,11 @@ public class LayerViewFragment extends Fragment
             throw new RuntimeException(e);
         }
         setNewLayer(layer);
+    }
+
+    public void saveMark(GeoMark mark) {
+        layer.changeMark(mark.getNumber() - 1, mark);
+        saveLayer(this.layer);
     }
 
     private static class FixedFragmentStateAdapter extends FragmentStateAdapter {
@@ -166,5 +166,9 @@ public class LayerViewFragment extends Fragment
 
     public String getIdOfLayer() {
         return layer.getId();
+    }
+
+    public void onOpenMark(GeoMark mark) {
+        mapFragment.onOpenMark(mark);
     }
 }

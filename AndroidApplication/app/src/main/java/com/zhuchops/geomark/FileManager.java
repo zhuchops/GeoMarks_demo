@@ -19,15 +19,6 @@ public class FileManager {
         Log.i("WRITE", "try to write a layer");
 
         String fileName = jsonLayer.getString("id") + ":" + jsonLayer.get("name");
-        File directory = new File(dirPath);
-        if (!directory.exists()) {
-            if (directory.mkdirs()) {
-                Log.i("DIR", "new directory created: " + directory.toString());
-            } else {
-                Log.w("DIR", "cant make a directory: " + directory.toString());
-            }
-
-        }
         try (FileOutputStream fos = new FileOutputStream(new File(dirPath, fileName))) {
             String jsonString = jsonLayer.toString();
             fos.write(jsonString.getBytes());
@@ -83,6 +74,17 @@ public class FileManager {
     }
 
     static boolean writeLayersTo(ArrayList<JSONObject> layers, String dirPath) throws JSONException {
+        File directory = new File(dirPath);
+        if (!directory.exists()) {
+            if (directory.mkdirs()) {
+                Log.i("DIR", "new directory created: " + directory.toString());
+            } else {
+                Log.w("DIR", "cant make a directory: " + directory.toString());
+            }
+        } else {
+            directory.delete();
+            return writeLayersTo(layers, dirPath);
+        }
         for (JSONObject jsonLayer:
              layers) {
             FileManager.writeLayerTo(jsonLayer, dirPath);
