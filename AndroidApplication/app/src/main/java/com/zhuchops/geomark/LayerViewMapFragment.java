@@ -126,19 +126,26 @@ public class LayerViewMapFragment extends Fragment
     @Override
     public void onClick(View v) {
         if (v.equals(binding.addMarkButton)) {
-            GeoMark mark = new GeoMark(
-                    "0.0", "0.0",
-                    modifyingLayer.getSize(),
-                    "no name",
-                    "no description"
-            );
-            modifyingLayer.addMark(mark);
-            save();
-            update();
-            onOpenMark(mark);
+            activity.onNewMark();
         }
     }
 
+    public void onGetLocation(String location) {
+        GeoMark mark = new GeoMark(
+                location.split(";")[0], location.split(";")[1],
+                modifyingLayer.getSize(),
+                "no name",
+                "no description"
+        );
+        makeNewMark(mark);
+    }
+
+    public void makeNewMark(GeoMark mark) {
+        modifyingLayer.addMark(mark);
+        save();
+        update();
+        onOpenMark(mark);
+    }
     public void save() {
         activity.saveLayer(modifyingLayer);
     }

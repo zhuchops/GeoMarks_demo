@@ -24,4 +24,6 @@
     <string name="admit_changes_text">применить изменения</string>
     <string name="none_editable">none_editable\n</string>
     <string name="change_text">изменить</string>
+    <string name="cancel_text">отменить</string>
+    <string name="admit_text">подтвердить</string>
 </resources>

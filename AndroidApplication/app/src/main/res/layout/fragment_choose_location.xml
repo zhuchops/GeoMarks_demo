@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.yandex.mapkit.mapview.MapView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:id="@+id/mapView"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+
+        android:id="@+id/choose_loc_center_dot"
+
+        android:scaleType="fitCenter"
+
+        android:src="@drawable/choose_loc_icon"
+
+        android:layout_marginBottom="80dp"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:id="@+id/buttonsContainer"
+
+        android:gravity="center"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/cancel_button"
+
+            android:text="@string/cancel_text"
+
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="0dp"
+
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"/>
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/admit_button"
+
+            android:text="@string/admit_text"
+
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="0dp"
+
+            android:background="@color/black"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,6 +46,7 @@ public class MarkViewFragment extends Fragment
 
         binding.closeButton.setOnClickListener(this);
         binding.changeButton.setOnClickListener(this);
+        update();
     }
 
     @Override
@@ -55,16 +56,25 @@ public class MarkViewFragment extends Fragment
     }
 
     public void setNewMark(GeoMark mark) {
+        this.mark = mark;
+        update();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         update();
     }
 
     public void update() {
         if (this.mark != null) {
-            binding.markNumberView.setText(mark.getNumber());
-            binding.markNameView.setText(mark.getName());
-            binding.coordinatesView.setText(
-                    String.format("Координаты: %s, %s", mark.getX(), mark.getY()));
-            binding.descriptionContainer.setText(mark.getDescription());
+            if (this.isVisible()) {
+                binding.markNumberView.setText(mark.getNumber());
+                binding.markNameView.setText(mark.getName());
+                binding.coordinatesView.setText(
+                        String.format("Координаты: %s, %s", mark.getX(), mark.getY()));
+                binding.descriptionContainer.setText(mark.getDescription());
+            }
         }
     }
 

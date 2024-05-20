@@ -38,6 +38,10 @@ public class LayerViewFragment extends Fragment
         }
     }
 
+    public void onGetNewMarkLocation(String location) {
+        mapFragment.onGetLocation(location);
+    }
+
     interface OnSaveListener {
         void saveLayer(GeoLayer layer);
     }

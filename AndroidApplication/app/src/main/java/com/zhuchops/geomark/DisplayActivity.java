@@ -16,14 +16,16 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class DisplayActivity extends AppCompatActivity
         implements NavigationBarFragment.OnChangeWindowListener,
         LayersListFragment.OnOpenWindowListener,
-                    UpperPanelFragment.OnGetLayerNameListener,
-                    LayerAdapter.OnItemClickListener,
-                    UpperPanelFragment.OnChangeEditModeOfDescriptionListener,
-        LayerViewTextFragment.OnSaveListener {
+        UpperPanelFragment.OnGetLayerNameListener,
+        LayerAdapter.OnItemClickListener,
+        UpperPanelFragment.OnChangeEditModeOfDescriptionListener,
+        LayerViewTextFragment.OnSaveListener,
+        ChooseLocationFragment.OnAdmitListener {
     private MapView mapView;
     private BoxClass box;
     public Class<?> activeWindow;
@@ -33,6 +35,8 @@ public class DisplayActivity extends AppCompatActivity
     private NavigationBarFragment navigationBarFragment;
     private LayerViewFragment layerViewFragment;
     private MarkViewFragment markViewFragment;
+
+    private ChooseLocationFragment chooseLocationFragment;
 
     private final HashMap<Class<?>, Fragment> classToFragment = new HashMap<>();
 
@@ -87,6 +91,8 @@ public class DisplayActivity extends AppCompatActivity
                 .add(R.id.markViewLayout, markViewFragment)
                 .hide(markViewFragment)
                 .commit();
+
+        chooseLocationFragment = new ChooseLocationFragment();
 
         classToFragment.put(MapFragment.class, mapFragment);
         classToFragment.put(LayersListFragment.class, layersListFragment);
@@ -204,5 +210,20 @@ public class DisplayActivity extends AppCompatActivity
         if (activeFragment instanceof LayerViewFragment) {
             ((LayerViewFragment) activeFragment).onOptionClick(text);
         }
+    }
+
+    @Override
+    public void onAdmit(HashMap<String, String> result) {
+        if (Objects.equals(result.get("result"), "admit")) {
+            layerViewFragment.onGetNewMarkLocation(result.get("location"));
+        }
+        getSupportFragmentManager().beginTransaction()
+                .remove(chooseLocationFragment);
+    }
+
+    public void onNewMark() {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.activeFragment, chooseLocationFragment)
+                .commit();
     }
 }
