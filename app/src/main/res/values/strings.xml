@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">GeoMark</string>
+    <string name="preference_file_key">~7sr41[GASfXY|:</string>
+    <string name="getIdFromSharedPreferences"><![CDATA[\"jgN4^]m?A%1Sv\"&\"]]></string>
+    <string name="box">\@S-7u4K7:YH\"gh^</string>
+    <string name="hintText">Выберете слои, которые будут отображаться на карте</string>
+
+    <string-array name="titlesName">
+        <item>Мои слои</item>
+        <item>Все слои</item>
+    </string-array>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="layersfragment">layersFragment</string>
+    <string name="mapfragment">mapFragment</string>
+    <string name="layerViewFragment">addNewLayerFragment</string>
+    <string name="mapNameForUpperPanel">Карта</string>
+    <string name="layersListNameForUpperPanel">Слои</string>
+    <string name="change_description_text">Изменить описание</string>
+    <string name="delete_layer_text">удалить слой</string>
+    <string name="change_name_text">изменить название</string>
+    <string name="change_image_text">изменить фото</string>
+    <string name="editable">editable</string>
+    <string name="admit_changes_text">применить изменения</string>
+    <string name="none_editable">none_editable\n</string>
+    <string name="change_text">изменить</string>
+    <string name="cancel_text">отменить</string>
+    <string name="admit_text">подтвердить</string>
+</resources>
